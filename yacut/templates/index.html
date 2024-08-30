@@ -18,13 +18,28 @@
                 <div>
                  
                 {{ form.original_link(class="form-control form-control-lg py-2 mb-3", id="form-title", placeholder="Длинная ссылка") }} 
-                 <p><span style="color:red">Текст возможной ошибки</span></p>
+                {% if form.original_link.errors %}
+                  {% for error in form.original_link.errors %}
+                  <p><span style="color:red">{{ error }}</span></p>
+                  {% endfor %}
+                {% endif %} 
+                
                 </div>
                 <div>
                   {{ form.custom_id(class="form-control form-control-lg py-2 mb-3", id="form-link", placeholder="Ваш вариант короткой ссылки") }}
-                  <p><span style="color:red">Текст возможной ошибки</span></p>
+                  {% if form.custom_id.errors %}
+                  {% for error in form.custom_id.errors %}
+                  <p><span style="color:red">{{ error }}</span></p>
+                  {% endfor %}
+                {% endif %}
+                {% with messages = get_flashed_messages() %}
+                  {% if messages %}
+                    {% for message in messages %}
+                      <p><span style="color:red">{{ message }}</span></p>
+                    {% endfor %}
+                  {% endif %}
+                {% endwith %}
                 </div>
-
                 <input type="submit" class="btn btn-primary" value="Создать">
               </div>
             </form>
@@ -40,7 +55,10 @@
           </div>
           <div class="col-sm">
             <p class="text-center">
-            <h5 class="text-center">Пример информационного сообщения</h5>
+            {% if result_link != "" %}
+              <h5 class="text-center">Ваша новая ссылка готова</h5>
+              <h5 class="text-center"> <a href="{{ result_link }}" target="_blank" > {{ result_link }} </a> </h5>
+            {% endif %}
             </p>
           </div>
           <div class="col-sm">
